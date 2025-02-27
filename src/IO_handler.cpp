@@ -10,7 +10,7 @@ IO_handler::IO_handler(void): a_out(PA_5),a_in1(PA_6),a_in2(PA_7)
 {
     a_out.write(0);
     lc_in = LinearCharacteristics(0, 1, -1, 1);
-    lc_out = LinearCharacteristics(0, 1, -1, 1);
+    lc_out = LinearCharacteristics(-1, 1, 0, 1);
     return;    
 }
 

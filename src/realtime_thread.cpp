@@ -5,6 +5,7 @@
 
 extern DataLogger myDataLogger;
 extern GPA myGPA;
+DataLogger myDataLogger;
 
 // contructor for realtime_thread loop
 realtime_thread::realtime_thread(IO_handler *io,float Ts) : thread(osPriorityHigh1, 1024)
@@ -29,11 +30,18 @@ void realtime_thread::loop(void)
     ThisThread::flags_wait_any(threadFlag);
 // --------------------- THE LOOP -----------------------------------------
     tim = ti.read();
-    if((int)floorf(ti.read())%2 <1)
-        m_io->write_aout(-.9);
-    else
-        m_io->write_aout(.9);
-    
+    // if((int)floorf(ti.read())%2 <1)
+    //     m_io->write_aout(-.9);
+    // else
+    //     m_io->write_aout(.9);
+
+    u_out = myDataLogger.get_set_value(tim);
+    m_io->write_aout(u_out);
+    // u_out = myGPA.update(u_out, m_io->read_ain2());
+
+    myDataLogger.write_to_log(tim, u_out, m_io->read_ain1(), m_io->read_ain2());    
+
+
 // read RCRC-Output with: ... = m_io->read_ain2();
 // here, you add your specific code, running in real-time (e.g. a controller)
 
