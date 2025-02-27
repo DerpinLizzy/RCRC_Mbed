@@ -5,7 +5,6 @@
 
 extern DataLogger myDataLogger;
 extern GPA myGPA;
-DataLogger myDataLogger;
 
 // contructor for realtime_thread loop
 realtime_thread::realtime_thread(IO_handler *io,float Ts) : thread(osPriorityHigh1, 1024)
@@ -26,7 +25,8 @@ void realtime_thread::loop(void)
   float tim;
   while (1)
     {
-    float u_out,tim;
+    float u_out,tim, soll, error, kp, ist;
+    kp = 4;
     ThisThread::flags_wait_any(threadFlag);
 // --------------------- THE LOOP -----------------------------------------
     tim = ti.read();
@@ -35,11 +35,19 @@ void realtime_thread::loop(void)
     // else
     //     m_io->write_aout(.9);
 
-    u_out = myDataLogger.get_set_value(tim);
     m_io->write_aout(u_out);
-    // u_out = myGPA.update(u_out, m_io->read_ain2());
+    u_out = myGPA.update(u_out, m_io->read_ain2());
 
-    myDataLogger.write_to_log(tim, u_out, m_io->read_ain1(), m_io->read_ain2());    
+    // u_out = myDataLogger.get_set_value(tim);
+    // m_io->write_aout(u_out);
+    // myDataLogger.write_to_log(tim, u_out, m_io->read_ain1(), m_io->read_ain2());    
+    
+    // soll = myDataLogger.get_set_value(tim);
+    // ist = m_io->read_ain2();
+    // error = soll - ist;
+    // u_out = kp * error;
+    // m_io->write_aout(u_out);
+    // myDataLogger.write_to_log(tim, soll, u_out, ist);
 
 
 // read RCRC-Output with: ... = m_io->read_ain2();
