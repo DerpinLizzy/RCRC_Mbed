@@ -30,9 +30,9 @@ void realtime_thread::loop(void)
 // --------------------- THE LOOP -----------------------------------------
     tim = ti.read();
     if((int)floorf(ti.read())%2 <1)
-        m_io->write_aout(.9);
+        m_io->write_aout(-.9);
     else
-        m_io->write_aout(.1);
+        m_io->write_aout(.9);
     
 // read RCRC-Output with: ... = m_io->read_ain2();
 // here, you add your specific code, running in real-time (e.g. a controller)
