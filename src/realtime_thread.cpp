@@ -35,19 +35,22 @@ void realtime_thread::loop(void)
     // else
     //     m_io->write_aout(.9);
 
-    m_io->write_aout(u_out);
-    u_out = myGPA.update(u_out, m_io->read_ain2());
+    // for measuring GPA ==================================================================
+    // m_io->write_aout(u_out);
+    // u_out = myGPA.update(u_out, m_io->read_ain2());
 
+    // for Measuring step response ========================================================
     // u_out = myDataLogger.get_set_value(tim);
     // m_io->write_aout(u_out);
     // myDataLogger.write_to_log(tim, u_out, m_io->read_ain1(), m_io->read_ain2());    
     
-    // soll = myDataLogger.get_set_value(tim);
-    // ist = m_io->read_ain2();
-    // error = soll - ist;
-    // u_out = kp * error;
-    // m_io->write_aout(u_out);
-    // myDataLogger.write_to_log(tim, soll, u_out, ist);
+    // for measuring step with P-controller ===============================================
+    soll = myDataLogger.get_set_value(tim);
+    ist = m_io->read_ain2();
+    error = soll - ist;
+    u_out = kp * error;
+    m_io->write_aout(u_out);
+    myDataLogger.write_to_log(tim, soll, u_out, ist);
 
 
 // read RCRC-Output with: ... = m_io->read_ain2();
