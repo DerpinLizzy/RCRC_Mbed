@@ -22,4 +22,6 @@ private:
     ThreadFlag threadFlag;
     void sendSignal();
     float Ts,u_out;
+    observer obs;
+    float saturate(float);
 };
